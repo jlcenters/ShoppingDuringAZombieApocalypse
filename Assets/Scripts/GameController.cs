@@ -5,7 +5,7 @@ using UnityEngine;
  * 
  * 
     GAME CONTROLLER FUNCTIONS:
-        Overseer: performs different functions depending on current game state
+        Observer: performs different functions depending on current game state
         game tutorial state will freeze controls and movement for specified time at start of scene
         communicates with UI and menus
         public function to check current game state
@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance { get; private set; }
 
-    private PlayerInputController inputController;
+    //private PlayerInputController inputController;
 
     private GameStates currentState = GameStates.GameTutorial;
 
@@ -33,11 +33,11 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
 
-        inputController = GetComponent<PlayerInputController>();
+        //inputController = GetComponent<PlayerInputController>();
     }
     private void Start()
     {
-        inputController.OnPause += PlayerInputController_OnPause;
+        PlayerInputController.Instance.OnPause += PlayerInputController_OnPause;
     }
     private void Update()
     {
@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
     private void OnDestroy()
     {
         Instance = null;
-        inputController.OnPause -= PlayerInputController_OnPause;
+       // PlayerInputController.Instance.OnPause -= PlayerInputController_OnPause;
     }
 
 
