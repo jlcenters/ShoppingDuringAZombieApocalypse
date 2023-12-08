@@ -1126,7 +1126,7 @@ MonoBehaviour:
   playerCrouchHeight: 1
   currentPlayerHeight: 2
   drag: 0
-  jumpForce: 100
+  jumpForce: 300
   jumpMultiplier: 0
   fallMultiplier: 0
   enemyLayer:

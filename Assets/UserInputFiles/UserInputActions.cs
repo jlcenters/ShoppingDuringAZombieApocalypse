@@ -71,6 +71,33 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShootWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""23fadc35-d306-4be1-bf34-03b57acbeff2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponStrike"",
+                    ""type"": ""Button"",
+                    ""id"": ""5ed64e89-ebd2-4ac7-970b-866647ba7e00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5700372-b29f-4e7a-ad7b-463410f9fad5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +199,39 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1ffefc4-8cec-4cb8-8b6b-847bd6f3c3b1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6365505-daee-400a-882a-c439edab0d01"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponStrike"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a015d6b7-f3b3-43c4-9ef6-50db9a64a51f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +245,9 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
         m_PlayerInput_Crouch = m_PlayerInput.FindAction("Crouch", throwIfNotFound: true);
         m_PlayerInput_Sprint = m_PlayerInput.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerInput_ShootWeapon = m_PlayerInput.FindAction("ShootWeapon", throwIfNotFound: true);
+        m_PlayerInput_WeaponStrike = m_PlayerInput.FindAction("WeaponStrike", throwIfNotFound: true);
+        m_PlayerInput_MeleeAttack = m_PlayerInput.FindAction("MeleeAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +314,9 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInput_Crouch;
     private readonly InputAction m_PlayerInput_Sprint;
     private readonly InputAction m_PlayerInput_Jump;
+    private readonly InputAction m_PlayerInput_ShootWeapon;
+    private readonly InputAction m_PlayerInput_WeaponStrike;
+    private readonly InputAction m_PlayerInput_MeleeAttack;
     public struct PlayerInputActions
     {
         private @UserInputActions m_Wrapper;
@@ -260,6 +326,9 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_PlayerInput_Crouch;
         public InputAction @Sprint => m_Wrapper.m_PlayerInput_Sprint;
         public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
+        public InputAction @ShootWeapon => m_Wrapper.m_PlayerInput_ShootWeapon;
+        public InputAction @WeaponStrike => m_Wrapper.m_PlayerInput_WeaponStrike;
+        public InputAction @MeleeAttack => m_Wrapper.m_PlayerInput_MeleeAttack;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -284,6 +353,15 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ShootWeapon.started += instance.OnShootWeapon;
+            @ShootWeapon.performed += instance.OnShootWeapon;
+            @ShootWeapon.canceled += instance.OnShootWeapon;
+            @WeaponStrike.started += instance.OnWeaponStrike;
+            @WeaponStrike.performed += instance.OnWeaponStrike;
+            @WeaponStrike.canceled += instance.OnWeaponStrike;
+            @MeleeAttack.started += instance.OnMeleeAttack;
+            @MeleeAttack.performed += instance.OnMeleeAttack;
+            @MeleeAttack.canceled += instance.OnMeleeAttack;
         }
 
         private void UnregisterCallbacks(IPlayerInputActions instance)
@@ -303,6 +381,15 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ShootWeapon.started -= instance.OnShootWeapon;
+            @ShootWeapon.performed -= instance.OnShootWeapon;
+            @ShootWeapon.canceled -= instance.OnShootWeapon;
+            @WeaponStrike.started -= instance.OnWeaponStrike;
+            @WeaponStrike.performed -= instance.OnWeaponStrike;
+            @WeaponStrike.canceled -= instance.OnWeaponStrike;
+            @MeleeAttack.started -= instance.OnMeleeAttack;
+            @MeleeAttack.performed -= instance.OnMeleeAttack;
+            @MeleeAttack.canceled -= instance.OnMeleeAttack;
         }
 
         public void RemoveCallbacks(IPlayerInputActions instance)
@@ -327,5 +414,8 @@ public partial class @UserInputActions: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnShootWeapon(InputAction.CallbackContext context);
+        void OnWeaponStrike(InputAction.CallbackContext context);
+        void OnMeleeAttack(InputAction.CallbackContext context);
     }
 }

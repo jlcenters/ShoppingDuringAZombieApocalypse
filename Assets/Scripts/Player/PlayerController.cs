@@ -30,9 +30,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float playerStandHeight = 2;
     [SerializeField] private float playerCrouchHeight;
     [SerializeField] private float currentPlayerHeight;
-    private bool canMove = true;
-    private bool canToggleCrouch = false;
-    private bool canJump = false;
 
     [Header("Vertical Movement")]
     [SerializeField] private float drag;
@@ -51,7 +48,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask healthPackLayer;
     [SerializeField] private float interactDistance;
 
-
+    //bools
+    private bool canMove = true;
+    private bool canToggleCrouch = false;
+    private bool jumpExecuted = false;
+    private bool shootExecuted = false;
+    private bool isShooting = false;
 
     private void Awake()
     {
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
         currentPlayerHeight = playerStandHeight;
         currentMovementSpeed = joggingSpeed;
         transform.localScale = new(transform.localScale.x, currentPlayerHeight, transform.localScale.z);
-
+        
         rb = GetComponent<Rigidbody>();
     }
     private void Start()
@@ -68,29 +70,44 @@ public class PlayerController : MonoBehaviour
         PlayerInputController.Instance.OnToggleCrouch += PlayerInputController_OnToggleCrouch;
         PlayerInputController.Instance.OnToggleSprint += PlayerInputController_OnToggleSprint;
         PlayerInputController.Instance.OnJump += PlayerInputController_OnJump;
+        PlayerInputController.Instance.OnToggleShoot += PlayerInputController_OnToggleShoot;
+        PlayerInputController.Instance.OnWeaponStrike += PlayerInputController_OnWeaponStrike;
+        PlayerInputController.Instance.OnMeleeAttack += PlayerInputController_OnMeleeAttack;
     }
     private void Update()
     {
-        if(GameController.Instance.IsCurrentState(GameStates.PlayGame))
+        if (GameController.Instance.IsCurrentState(GameStates.PlayGame))
         {
             //attempt to crouch
-            if(canToggleCrouch)
+            if (canToggleCrouch)
             {
                 //takes new height and lerps
                 StartCoroutine(Crouch(new(transform.localScale.x, currentPlayerHeight, transform.localScale.z)));
             }
 
             //attempt to jump
-            if(canJump)
+            if(jumpExecuted && IsGrounded())
             {
                 StartCoroutine(Jump());
             }
-
             //attempt to move
-            if (canMove)
+            else if (canMove)
             {
                 Vector2 inputDirection = PlayerInputController.Instance.GetMovementNormalized();
                 Move(inputDirection.x, inputDirection.y);
+            }
+
+
+        }
+    }
+    private void FixedUpdate()
+    {
+        if(GameController.Instance.IsCurrentState(GameStates.PlayGame))
+        {
+            //attempt to shoot
+            if (isShooting && shootExecuted)
+            {
+                StartCoroutine(ShootWeapon());
             }
         }
     }
@@ -154,20 +171,47 @@ public class PlayerController : MonoBehaviour
     private void PlayerInputController_OnJump()
     {
         //cannot jump if sneaking
-        if(currentPlayerHeight == playerStandHeight)
+        if(IsGrounded())
         {
-            canJump = !canJump;
+            jumpExecuted = !jumpExecuted;
             canMove = !canMove;
         }
     }
     private IEnumerator Jump()
     {
-        //jump logic 
-        rb.AddForce(Vector3.up * drag, ForceMode.Force);
-        yield return null;
+        //toggle off jump check in update
+        jumpExecuted = !jumpExecuted;
+
+        //jump and wait
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Force);
+        yield return new WaitForSeconds(0.5f);
+
         //when player hits ground, toggle can jump and can move bools
-        //yield return new WaitUntil(() => transform.position.y == 0);
-        canJump = !canJump;
+        yield return new WaitWhile(() => !IsGrounded());
         canMove = !canMove;
+    }
+    public bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, -transform.up, 1f);
+    }
+    private void PlayerInputController_OnToggleShoot()
+    {
+        shootExecuted = !shootExecuted;
+        isShooting = !isShooting;
+    }
+    private IEnumerator ShootWeapon()
+    {
+        shootExecuted = !shootExecuted;
+        Debug.Log("brrap");
+        yield return new WaitForSeconds(0.5f);
+        shootExecuted = !shootExecuted;
+    }
+    private void PlayerInputController_OnWeaponStrike()
+    {
+        Debug.Log("whap");
+    }
+    private void PlayerInputController_OnMeleeAttack()
+    {
+        Debug.Log("swish");
     }
 }

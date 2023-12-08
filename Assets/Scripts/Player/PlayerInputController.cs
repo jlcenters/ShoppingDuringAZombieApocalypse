@@ -26,6 +26,9 @@ public class PlayerInputController : MonoBehaviour
     public event Action OnToggleCrouch;
     public event Action OnToggleSprint;
     public event Action OnJump;
+    public event Action OnToggleShoot;
+    public event Action OnWeaponStrike;
+    public event Action OnMeleeAttack;
 
     //user input actions toggle var
     //private bool uiaEnabled = true;
@@ -46,6 +49,10 @@ public class PlayerInputController : MonoBehaviour
         userInputActions.PlayerInput.Sprint.performed += Sprint_toggled;
         userInputActions.PlayerInput.Sprint.canceled += Sprint_toggled;
         userInputActions.PlayerInput.Jump.performed += Jump_performed;
+        userInputActions.PlayerInput.ShootWeapon.performed += ShootWeapon_toggled;
+        userInputActions.PlayerInput.ShootWeapon.canceled += ShootWeapon_toggled;
+        userInputActions.PlayerInput.WeaponStrike.performed += WeaponStrike_performed;
+        userInputActions.PlayerInput.MeleeAttack.performed += MeleeAttack_performed;
     }
     private void OnDestroy()
     {
@@ -58,6 +65,10 @@ public class PlayerInputController : MonoBehaviour
         userInputActions.PlayerInput.Crouch.performed -= Crouch_toggled;
         userInputActions.PlayerInput.Sprint.performed -= Sprint_toggled;
         userInputActions.PlayerInput.Sprint.canceled -= Sprint_toggled;
+        userInputActions.PlayerInput.ShootWeapon.performed -= ShootWeapon_toggled;
+        userInputActions.PlayerInput.ShootWeapon.canceled -= ShootWeapon_toggled;
+        userInputActions.PlayerInput.WeaponStrike.performed -= WeaponStrike_performed;
+        userInputActions.PlayerInput.MeleeAttack.performed -= MeleeAttack_performed;
     }
 
 
@@ -85,8 +96,18 @@ public class PlayerInputController : MonoBehaviour
     {
         OnJump?.Invoke();
     }
-
-
+    private void ShootWeapon_toggled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnToggleShoot?.Invoke();
+    }
+    private void WeaponStrike_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnWeaponStrike?.Invoke();
+    }
+    private void MeleeAttack_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnMeleeAttack?.Invoke();
+    }
     /*private void ToggleUserInputs()
     {
         uiaEnabled = !uiaEnabled;
