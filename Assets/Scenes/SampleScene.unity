@@ -275,6 +275,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5631d79cf6df53a4b8e522c76d81584b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &479263518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 479263519}
+  - component: {fileID: 479263520}
+  - component: {fileID: 479263521}
+  m_Layer: 7
+  m_Name: Zombie
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &479263519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479263518}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.2, z: 13.72}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1046582397}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &479263520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479263518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d83ffa2e9f8fd941970529b3394c5e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  dmgColor: {r: 0.8018868, g: 0.08825789, b: 0.08825789, a: 1}
+  defaultColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!54 &479263521
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479263518}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &599398115
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +363,7 @@ GameObject:
   - component: {fileID: 599398119}
   - component: {fileID: 599398118}
   - component: {fileID: 599398117}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +379,7 @@ Transform:
   m_GameObject: {fileID: 599398115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.06, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -560,7 +636,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -578,8 +654,8 @@ GameObject:
   - component: {fileID: 1046582396}
   - component: {fileID: 1046582395}
   - component: {fileID: 1046582394}
-  m_Layer: 0
-  m_Name: Cube
+  m_Layer: 7
+  m_Name: ZombieBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -626,7 +702,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 81507d7484f690b458ab03b9d698c269, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -664,12 +740,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046582392}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 8.18}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: -8.18}
+  m_LocalScale: {x: 1, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 479263519}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1362743301
 GameObject:
@@ -1097,7 +1173,8 @@ GameObject:
   - component: {fileID: 1971122615}
   - component: {fileID: 1971122614}
   - component: {fileID: 1971122616}
-  m_Layer: 0
+  - component: {fileID: 1971122617}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1131,10 +1208,11 @@ MonoBehaviour:
   fallMultiplier: 0
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   playerHealth: 100
   playerStamina: 50
   attackSpeed: 0
+  weaponsInventory: {fileID: 0}
   groceriesLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -1142,6 +1220,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   interactDistance: 0
+  testDummy: {fileID: 479263520}
+  primaryRange: 10
+  primaryDmg: 3
+  primaryAltDmg: 1
+  primaryAPS: 2
+  meleeRange: 1
+  meleeDmg: 1
+  meleeAltDmg: 1
+  meleeAPS: 2
 --- !u!4 &1971122615
 Transform:
   m_ObjectHideFlags: 0
@@ -1184,8 +1271,20 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 48
   m_CollisionDetection: 0
+--- !u!114 &1971122617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971122613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56d4604283dcbe4997aee89edd54f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1997128340
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,8 +1350,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 705507995}
   - {fileID: 1997128342}
+  - {fileID: 479263519}
   - {fileID: 1971122615}
-  - {fileID: 1046582397}
   - {fileID: 1857214701}
   - {fileID: 1362743304}
   - {fileID: 1744995993}

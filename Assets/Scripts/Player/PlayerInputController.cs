@@ -57,7 +57,7 @@ public class PlayerInputController : MonoBehaviour
     private void OnDestroy()
     {
         //remove instance and reader
-        Instance = null;
+        //Instance = null;
         userInputActions.Dispose();
 
         //unsubscribe input events

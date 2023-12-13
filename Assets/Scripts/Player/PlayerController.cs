@@ -9,6 +9,7 @@ using UnityEngine;
         attacks
         checks interactions
         checks hp when damaged
+        stores instances of equipped weapons
  *
  *
  */
@@ -42,18 +43,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int playerHealth;
     [SerializeField] private int playerStamina;
     [SerializeField] private float attackSpeed;
+    [SerializeField] private WeaponsInventory weaponsInventory;
 
     [Header("Interactions")]
     [SerializeField] private LayerMask groceriesLayer;
     [SerializeField] private LayerMask healthPackLayer;
     [SerializeField] private float interactDistance;
 
-    //bools
+    [Header("vars available for testing purposes")]
+    [SerializeField] EnemyController testDummy;
+    [SerializeField] private int primaryRange;
+    [SerializeField] private int primaryDmg;
+    [SerializeField] private int primaryAltDmg;
+    [SerializeField] private float primaryAPS;
+    [SerializeField] private int meleeRange;
+    [SerializeField] private int meleeDmg;
+    [SerializeField] private int meleeAltDmg;
+    [SerializeField] private float meleeAPS;
+
+    //control bools
     private bool canMove = true;
     private bool canToggleCrouch = false;
     private bool jumpExecuted = false;
     private bool shootExecuted = false;
-    private bool isShooting = false;
+    private bool canShoot = false;
 
     private void Awake()
     {
@@ -64,6 +77,13 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new(transform.localScale.x, currentPlayerHeight, transform.localScale.z);
         
         rb = GetComponent<Rigidbody>();
+
+        //instantiate default primary and melee weapons and store in inventory
+        weaponsInventory = GetComponent<WeaponsInventory>();
+        weaponsInventory.AddToInventory(WeaponTypes.Primary, new(primaryRange, primaryDmg, primaryAltDmg, 1f - (primaryAPS * 0.1f))); //rate calculated for cooldown
+        weaponsInventory.AddToInventory(WeaponTypes.Melee, new(meleeRange, meleeDmg, meleeAltDmg, 1f - (meleeAPS * 0.1f)));
+        Debug.Log("PRIMARY " + weaponsInventory.weapons[WeaponTypes.Primary].ToString());
+        Debug.Log("MELEE " + weaponsInventory.weapons[WeaponTypes.Melee].ToString());
     }
     private void Start()
     {
@@ -105,7 +125,7 @@ public class PlayerController : MonoBehaviour
         if(GameController.Instance.IsCurrentState(GameStates.PlayGame))
         {
             //attempt to shoot
-            if (isShooting && shootExecuted)
+            if (canShoot && shootExecuted)
             {
                 StartCoroutine(ShootWeapon());
             }
@@ -197,21 +217,34 @@ public class PlayerController : MonoBehaviour
     private void PlayerInputController_OnToggleShoot()
     {
         shootExecuted = !shootExecuted;
-        isShooting = !isShooting;
+        canShoot = !canShoot;
     }
     private IEnumerator ShootWeapon()
     {
         shootExecuted = !shootExecuted;
         Debug.Log("brrap");
-        yield return new WaitForSeconds(0.5f);
+        if (CanAttack(weaponsInventory.weapons[WeaponTypes.Primary].range))
+        {
+            Debug.Log("hit an enemy");
+            testDummy.TakeDamage(weaponsInventory.weapons[WeaponTypes.Primary].damage);
+        }
+        yield return new WaitForSeconds(weaponsInventory.weapons[WeaponTypes.Primary].attackCooldown); //calculated in player controller awake
         shootExecuted = !shootExecuted;
     }
     private void PlayerInputController_OnWeaponStrike()
     {
-        Debug.Log("whap");
+        Debug.Log("bonk");
+        CanAttack(weaponsInventory.weapons[WeaponTypes.Melee].range);
     }
     private void PlayerInputController_OnMeleeAttack()
     {
         Debug.Log("swish");
+        CanAttack(weaponsInventory.weapons[WeaponTypes.Melee].range);
+    }
+
+    private bool CanAttack(float range)
+    {
+        return Physics.Raycast(transform.position, transform.forward, range, enemyLayer);
+
     }
 }
